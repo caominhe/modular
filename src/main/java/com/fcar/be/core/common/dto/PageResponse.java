@@ -1,5 +1,20 @@
-package com.fcar.be.core.common.dto;
 
 // # DTO bọc dữ liệu phân trang (tổng số trang, phần tử hiện tại...)
-public class PageResponse {
+package com.fcar.be.core.common.dto;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import java.util.List;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class PageResponse<T> {
+    List<T> data;
+    long totalElements;
+    int totalPages;
+    int currentPage;
+    int pageSize;
 }
