@@ -65,6 +65,7 @@ public enum ErrorCode {
     LICENSE_PLATE_EXISTED(6003, "This license plate is already registered to another vehicle", HttpStatus.BAD_REQUEST),
     INVALID_PAYMENT_AMOUNT(6004, "Payment amount is invalid", HttpStatus.BAD_REQUEST),
 
+    // Lỗi liên quan đến Aftersales (Warranty/Service) (7xxx)
     // ==============================================================================
     // [MODULE 6] AFTERSALES: Bảo hành & Dịch vụ (7xxx)
     // ==============================================================================
