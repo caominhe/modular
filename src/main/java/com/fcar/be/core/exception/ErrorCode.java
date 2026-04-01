@@ -20,6 +20,12 @@ public enum ErrorCode {
     // Lỗi cho dự án FCAR
     CAR_NOT_FOUND(2001, "Car with this VIN not found", HttpStatus.NOT_FOUND),
     VOUCHER_EXPIRED(3001, "Voucher has expired", HttpStatus.BAD_REQUEST),
+
+    // Lỗi liên quan đến CRM (Lead/TestDrive) (4xxx)
+    LEAD_NOT_FOUND(4001, "Lead customer not found", HttpStatus.NOT_FOUND),
+    TEST_DRIVE_NOT_FOUND(4002, "Test drive schedule not found", HttpStatus.NOT_FOUND),
+    INVALID_LEAD_STATUS(4003, "Cannot change lead to this status", HttpStatus.BAD_REQUEST),
+    SCHEDULE_TIME_INVALID(4004, "Test drive schedule must be in the future", HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;
