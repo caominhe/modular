@@ -38,6 +38,10 @@ public enum ErrorCode {
     HANDOVER_NOT_FOUND(6002, "Handover record not found", HttpStatus.NOT_FOUND),
     LICENSE_PLATE_EXISTED(6003, "This license plate is already registered to another vehicle", HttpStatus.BAD_REQUEST),
     INVALID_PAYMENT_AMOUNT(6004, "Payment amount is invalid", HttpStatus.BAD_REQUEST),
+
+    // Lỗi liên quan đến Aftersales (Warranty/Service) (7xxx)
+    WARRANTY_EXISTED(7001, "Warranty book already exists for this car VIN", HttpStatus.BAD_REQUEST),
+    WARRANTY_NOT_FOUND(7002, "Warranty book not found. Please check the car VIN.", HttpStatus.NOT_FOUND),
     ;
 
     private final int code;
