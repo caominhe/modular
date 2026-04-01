@@ -1,31 +1,41 @@
-
-// # Logic truy vấn user từ DB (gọi sang module Identity)
 package com.fcar.be.core.security;
 
+import com.fcar.be.modules.identity.entity.User;
+import com.fcar.be.modules.identity.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    // Inject UserRepository từ module Identity khi bạn tạo xong
-    // private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // Giả lập tìm kiếm user từ DB (Dựa theo bảng users trong V1__init_database.sql)
-        // User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(...));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
-        return new CustomUserDetails(
-                1L, // id
-                email,
-                "password_hash", // lấy từ db
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
-        );
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+        // Map roles and permissions
+        if(user.getRoles() != null) {
+            user.getRoles().forEach(role -> {
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+                if(role.getPermissions() != null) {
+                    role.getPermissions().forEach(permission ->
+                            authorities.add(new SimpleGrantedAuthority(permission.getName())));
+                }
+            });
+        }
+
+        return new CustomUserDetails(user.getId(), user.getEmail(), user.getPasswordHash(), authorities);
     }
 }
