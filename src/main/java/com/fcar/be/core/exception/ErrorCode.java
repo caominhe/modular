@@ -21,6 +21,19 @@ public enum ErrorCode {
 
     // Lỗi liên quan đến Inventory (Car/MasterData) (2xxx)
     CAR_NOT_FOUND(2001, "Car with this VIN not found", HttpStatus.NOT_FOUND),
+    VOUCHER_EXPIRED(3001, "Voucher has expired", HttpStatus.BAD_REQUEST),
+
+    // Lỗi liên quan đến CRM (Lead/TestDrive) (4xxx)
+    LEAD_NOT_FOUND(4001, "Lead customer not found", HttpStatus.NOT_FOUND),
+    TEST_DRIVE_NOT_FOUND(4002, "Test drive schedule not found", HttpStatus.NOT_FOUND),
+    INVALID_LEAD_STATUS(4003, "Cannot change lead to this status", HttpStatus.BAD_REQUEST),
+    SCHEDULE_TIME_INVALID(4004, "Test drive schedule must be in the future", HttpStatus.BAD_REQUEST),
+
+    // Lỗi liên quan đến Sales (Quotation/Contract) (5xxx)
+    QUOTATION_NOT_FOUND(5001, "Quotation not found", HttpStatus.NOT_FOUND),
+    QUOTATION_NOT_ACCEPTED(5002, "Quotation must be ACCEPTED before creating a contract", HttpStatus.BAD_REQUEST),
+    CONTRACT_EXISTED(5003, "A contract has already been created for this quotation", HttpStatus.BAD_REQUEST),
+    CONTRACT_NOT_FOUND(5004, "Contract not found", HttpStatus.NOT_FOUND),
     CAR_EXISTED(2002, "Car with this VIN already exists in the system", HttpStatus.BAD_REQUEST),
     ENGINE_NUMBER_EXISTED(2003, "Car with this engine number already exists", HttpStatus.BAD_REQUEST),
     MASTER_DATA_NOT_FOUND(2004, "Master data (Car model) not found", HttpStatus.NOT_FOUND),
@@ -29,7 +42,6 @@ public enum ErrorCode {
     // Lỗi liên quan đến Marketing (Voucher/Campaign) (3xxx)
     CAMPAIGN_NOT_FOUND(3001, "Campaign not found in the system", HttpStatus.NOT_FOUND),
     VOUCHER_NOT_FOUND(3002, "Voucher code does not exist", HttpStatus.NOT_FOUND),
-    VOUCHER_EXPIRED(3003, "Voucher has expired", HttpStatus.BAD_REQUEST),
     VOUCHER_INVALID_STATUS(3004, "Voucher is not in the correct state to perform this action", HttpStatus.BAD_REQUEST),
     VOUCHER_NOT_OWNED(3005, "You do not own this voucher or it does not exist", HttpStatus.FORBIDDEN),
     ;
