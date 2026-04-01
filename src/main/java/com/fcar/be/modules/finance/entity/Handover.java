@@ -1,0 +1,36 @@
+package com.fcar.be.modules.finance.entity;
+
+import com.fcar.be.modules.finance.enums.HandoverStatus;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "handovers")
+public class Handover {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+
+    @Column(name = "contract_no", nullable = false, unique = true)
+    String contractNo;
+
+    @Column(name = "license_plate", unique = true)
+    String licensePlate; // Sẽ được cập nhật sau khi đi bấm biển số
+
+    @Column(name = "handover_date")
+    LocalDateTime handoverDate; // Ngày giao xe thực tế
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    HandoverStatus status = HandoverStatus.PROCESSING;
+}

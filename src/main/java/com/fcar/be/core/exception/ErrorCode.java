@@ -32,6 +32,12 @@ public enum ErrorCode {
     QUOTATION_NOT_ACCEPTED(5002, "Quotation must be ACCEPTED before creating a contract", HttpStatus.BAD_REQUEST),
     CONTRACT_EXISTED(5003, "A contract has already been created for this quotation", HttpStatus.BAD_REQUEST),
     CONTRACT_NOT_FOUND(5004, "Contract not found", HttpStatus.NOT_FOUND),
+
+    // Lỗi liên quan đến Finance & Handover (Payment/Handover) (6xxx)
+    HANDOVER_EXISTED(6001, "Handover process has already been initiated for this contract", HttpStatus.BAD_REQUEST),
+    HANDOVER_NOT_FOUND(6002, "Handover record not found", HttpStatus.NOT_FOUND),
+    LICENSE_PLATE_EXISTED(6003, "This license plate is already registered to another vehicle", HttpStatus.BAD_REQUEST),
+    INVALID_PAYMENT_AMOUNT(6004, "Payment amount is invalid", HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;
