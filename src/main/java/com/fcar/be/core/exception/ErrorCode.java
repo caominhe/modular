@@ -20,24 +20,6 @@ public enum ErrorCode {
     // Lỗi cho dự án FCAR
     CAR_NOT_FOUND(2001, "Car with this VIN not found", HttpStatus.NOT_FOUND),
     VOUCHER_EXPIRED(3001, "Voucher has expired", HttpStatus.BAD_REQUEST),
-
-    // Lỗi liên quan đến CRM (Lead/TestDrive) (4xxx)
-    LEAD_NOT_FOUND(4001, "Lead customer not found", HttpStatus.NOT_FOUND),
-    TEST_DRIVE_NOT_FOUND(4002, "Test drive schedule not found", HttpStatus.NOT_FOUND),
-    INVALID_LEAD_STATUS(4003, "Cannot change lead to this status", HttpStatus.BAD_REQUEST),
-    SCHEDULE_TIME_INVALID(4004, "Test drive schedule must be in the future", HttpStatus.BAD_REQUEST),
-
-    // Lỗi liên quan đến Sales (Quotation/Contract) (5xxx)
-    QUOTATION_NOT_FOUND(5001, "Quotation not found", HttpStatus.NOT_FOUND),
-    QUOTATION_NOT_ACCEPTED(5002, "Quotation must be ACCEPTED before creating a contract", HttpStatus.BAD_REQUEST),
-    CONTRACT_EXISTED(5003, "A contract has already been created for this quotation", HttpStatus.BAD_REQUEST),
-    CONTRACT_NOT_FOUND(5004, "Contract not found", HttpStatus.NOT_FOUND),
-
-    // Lỗi liên quan đến Finance & Handover (Payment/Handover) (6xxx)
-    HANDOVER_EXISTED(6001, "Handover process has already been initiated for this contract", HttpStatus.BAD_REQUEST),
-    HANDOVER_NOT_FOUND(6002, "Handover record not found", HttpStatus.NOT_FOUND),
-    LICENSE_PLATE_EXISTED(6003, "This license plate is already registered to another vehicle", HttpStatus.BAD_REQUEST),
-    INVALID_PAYMENT_AMOUNT(6004, "Payment amount is invalid", HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;
