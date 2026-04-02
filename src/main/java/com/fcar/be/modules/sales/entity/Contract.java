@@ -1,11 +1,13 @@
 package com.fcar.be.modules.sales.entity;
 
-import com.fcar.be.modules.sales.enums.ContractStatus;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
+
+import com.fcar.be.modules.sales.enums.ContractStatus;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

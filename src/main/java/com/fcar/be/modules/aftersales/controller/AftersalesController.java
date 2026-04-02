@@ -1,16 +1,19 @@
 package com.fcar.be.modules.aftersales.controller;
 
+import java.util.List;
+
+import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.*;
+
 import com.fcar.be.core.common.dto.ApiResponse;
 import com.fcar.be.modules.aftersales.dto.request.ServiceTicketCreateReq;
 import com.fcar.be.modules.aftersales.dto.request.WarrantyActivateReq;
 import com.fcar.be.modules.aftersales.dto.response.ServiceTicketRes;
 import com.fcar.be.modules.aftersales.dto.response.WarrantyBookRes;
 import com.fcar.be.modules.aftersales.service.AftersalesService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/aftersales")

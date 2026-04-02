@@ -1,5 +1,11 @@
 package com.fcar.be.modules.identity.service;
 
+import java.util.HashSet;
+import java.util.List;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.fcar.be.core.exception.AppException;
 import com.fcar.be.core.exception.ErrorCode;
 import com.fcar.be.modules.identity.dto.request.UserCreationRequest;
@@ -9,12 +15,8 @@ import com.fcar.be.modules.identity.entity.User;
 import com.fcar.be.modules.identity.mapper.UserMapper;
 import com.fcar.be.modules.identity.repository.RoleRepository;
 import com.fcar.be.modules.identity.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

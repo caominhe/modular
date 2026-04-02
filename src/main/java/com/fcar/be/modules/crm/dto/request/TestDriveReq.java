@@ -1,15 +1,22 @@
 package com.fcar.be.modules.crm.dto.request;
 
+import java.time.LocalDateTime;
+
 import jakarta.validation.constraints.NotNull;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TestDriveReq {
-    @NotNull Long leadId;
-    @NotNull Long carModelId;
-    @NotNull LocalDateTime scheduleTime;
+    @NotNull
+    Long leadId;
+
+    @NotNull
+    Long carModelId;
+
+    @NotNull
+    LocalDateTime scheduleTime;
 }

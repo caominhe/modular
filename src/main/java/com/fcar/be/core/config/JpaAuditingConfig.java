@@ -1,13 +1,14 @@
-
 // # Bật tính năng tự động điền createdAt, updatedAt
 package com.fcar.be.core.config;
 
 import java.util.Optional;
-import com.fcar.be.core.common.util.SecurityUtils;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+import com.fcar.be.core.common.util.SecurityUtils;
 
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")

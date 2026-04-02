@@ -1,11 +1,13 @@
 package com.fcar.be.modules.marketing.entity;
 
-import com.fcar.be.modules.marketing.enums.VoucherStatus;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
+
+import com.fcar.be.modules.marketing.enums.VoucherStatus;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

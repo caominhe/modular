@@ -1,9 +1,9 @@
 package com.fcar.be.modules.identity.repository;
 
-import com.fcar.be.modules.identity.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.fcar.be.modules.identity.entity.Role;
+
 @Repository
-public interface RoleRepository extends JpaRepository<Role, String> {
-}
+public interface RoleRepository extends JpaRepository<Role, String> {}

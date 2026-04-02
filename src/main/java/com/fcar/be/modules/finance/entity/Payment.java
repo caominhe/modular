@@ -1,15 +1,18 @@
 package com.fcar.be.modules.finance.entity;
 
-import com.fcar.be.modules.finance.enums.PaymentStatus;
-import com.fcar.be.modules.finance.enums.PaymentType;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import com.fcar.be.modules.finance.enums.PaymentStatus;
+import com.fcar.be.modules.finance.enums.PaymentType;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter

@@ -1,4 +1,3 @@
-
 // # Tiện ích format, parse thời gian
 package com.fcar.be.core.common.util;
 

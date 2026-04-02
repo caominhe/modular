@@ -1,5 +1,10 @@
 package com.fcar.be.modules.crm.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.fcar.be.core.exception.AppException;
 import com.fcar.be.core.exception.ErrorCode;
 import com.fcar.be.modules.crm.dto.request.LeadCreateReq;
@@ -9,11 +14,8 @@ import com.fcar.be.modules.crm.enums.LeadStatus;
 import com.fcar.be.modules.crm.mapper.CrmMapper;
 import com.fcar.be.modules.crm.repository.LeadRepository;
 import com.fcar.be.modules.crm.service.LeadService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +35,7 @@ public class LeadServiceImpl implements LeadService {
     @Override
     @Transactional
     public LeadRes assignSales(Long leadId, Long salesId) {
-        Lead lead = leadRepository.findById(leadId)
-                .orElseThrow(() -> new AppException(ErrorCode.LEAD_NOT_FOUND));
+        Lead lead = leadRepository.findById(leadId).orElseThrow(() -> new AppException(ErrorCode.LEAD_NOT_FOUND));
 
         lead.setAssignedSalesId(salesId);
         lead.setStatus(LeadStatus.CONTACTING);

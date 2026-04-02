@@ -1,5 +1,4 @@
-
-//# Custom Exception dùng để ném lỗi nghiệp vụ
+// # Custom Exception dùng để ném lỗi nghiệp vụ
 package com.fcar.be.core.exception;
 
 import lombok.Getter;

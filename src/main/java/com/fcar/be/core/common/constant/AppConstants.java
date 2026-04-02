@@ -1,4 +1,3 @@
-
 // # Lưu các hằng số tĩnh (VD: DEFAULT_PAGE_SIZE = 20)
 package com.fcar.be.core.common.constant;
 

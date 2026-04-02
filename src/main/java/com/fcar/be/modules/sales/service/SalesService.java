@@ -6,5 +6,8 @@ import com.fcar.be.modules.sales.dto.response.QuotationRes;
 
 public interface SalesService {
     QuotationRes createQuotation(QuotationCreateReq request, Long customerUserId);
+
     ContractRes createContract(Long quotationId, Long salesId);
+
+    QuotationRes acceptQuotation(Long quotationId);
 }

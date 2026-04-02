@@ -1,11 +1,13 @@
 package com.fcar.be.modules.identity.entity;
 
-import com.fcar.be.core.common.entity.BaseAuditableEntity;
+import java.util.Set;
+
 import jakarta.persistence.*;
+
+import com.fcar.be.core.common.entity.BaseAuditableEntity;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Getter
 @Setter
@@ -40,7 +42,6 @@ public class User extends BaseAuditableEntity {
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_name")
-    )
+            inverseJoinColumns = @JoinColumn(name = "role_name"))
     Set<Role> roles;
 }

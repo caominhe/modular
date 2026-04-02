@@ -1,10 +1,10 @@
-
 // # DTO bọc dữ liệu phân trang (tổng số trang, phần tử hiện tại...)
 package com.fcar.be.core.common.dto;
 
+import java.util.List;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import java.util.List;
 
 @Data
 @Builder

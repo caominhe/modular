@@ -1,5 +1,13 @@
 package com.fcar.be.modules.marketing.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.fcar.be.core.exception.AppException;
 import com.fcar.be.core.exception.ErrorCode;
 import com.fcar.be.modules.marketing.dto.request.CampaignCreateReq;
@@ -11,14 +19,8 @@ import com.fcar.be.modules.marketing.mapper.MarketingMapper;
 import com.fcar.be.modules.marketing.repository.CampaignRepository;
 import com.fcar.be.modules.marketing.repository.VoucherRepository;
 import com.fcar.be.modules.marketing.service.MarketingService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -35,13 +37,15 @@ public class MarketingServiceImpl implements MarketingService {
     @Override
     @Transactional
     public List<VoucherRes> generateVouchers(Long campaignId, int quantity, String prefix, LocalDateTime expiredAt) {
-        Campaign campaign = campaignRepository.findById(campaignId)
+        Campaign campaign = campaignRepository
+                .findById(campaignId)
                 .orElseThrow(() -> new AppException(ErrorCode.CAMPAIGN_NOT_FOUND));
 
         List<Voucher> newVouchers = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
             // Sinh mã ngẫu nhiên: VD "VIP-8F3A9C"
-            String code = (prefix != null ? prefix + "-" : "") + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+            String code = (prefix != null ? prefix + "-" : "")
+                    + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
 
             newVouchers.add(Voucher.builder()
                     .code(code)
@@ -52,14 +56,15 @@ public class MarketingServiceImpl implements MarketingService {
         }
 
         return voucherRepository.saveAll(newVouchers).stream()
-                .map(marketingMapper::toVoucherRes).toList();
+                .map(marketingMapper::toVoucherRes)
+                .toList();
     }
 
     @Override
     @Transactional
     public VoucherRes claimVoucher(String code, Long userId) {
-        Voucher voucher = voucherRepository.findById(code)
-                .orElseThrow(() -> new AppException(ErrorCode.VOUCHER_NOT_FOUND));
+        Voucher voucher =
+                voucherRepository.findById(code).orElseThrow(() -> new AppException(ErrorCode.VOUCHER_NOT_FOUND));
 
         if (voucher.getStatus() != VoucherStatus.ACTIVE) {
             throw new AppException(ErrorCode.VOUCHER_INVALID_STATUS);
@@ -78,7 +83,8 @@ public class MarketingServiceImpl implements MarketingService {
     @Override
     @Transactional
     public VoucherRes useVoucher(String code, Long userId) {
-        Voucher voucher = voucherRepository.findByCodeAndUserId(code, userId)
+        Voucher voucher = voucherRepository
+                .findByCodeAndUserId(code, userId)
                 .orElseThrow(() -> new AppException(ErrorCode.VOUCHER_NOT_OWNED));
 
         if (voucher.getStatus() != VoucherStatus.CLAIMED) {

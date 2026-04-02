@@ -1,11 +1,12 @@
 package com.fcar.be.modules.marketing.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
 import com.fcar.be.modules.marketing.dto.request.CampaignCreateReq;
 import com.fcar.be.modules.marketing.dto.response.VoucherRes;
 import com.fcar.be.modules.marketing.entity.Campaign;
 import com.fcar.be.modules.marketing.entity.Voucher;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface MarketingMapper {
@@ -20,5 +21,3 @@ public interface MarketingMapper {
     @Mapping(source = "campaign.discountValue", target = "discountValue")
     VoucherRes toVoucherRes(Voucher voucher);
 }
-
-

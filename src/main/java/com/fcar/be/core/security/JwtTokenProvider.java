@@ -1,13 +1,14 @@
-
 // # Class tiện ích: Tạo, giải mã và xác minh tính hợp lệ của JWT
 package com.fcar.be.core.security;
 
 import java.util.Date;
 import javax.crypto.SecretKey;
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 
 @Component

@@ -1,10 +1,11 @@
 package com.fcar.be.modules.identity.entity;
 
+import java.util.Set;
+
 import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Getter
 @Setter
@@ -24,7 +25,6 @@ public class Role {
     @JoinTable(
             name = "roles_permissions",
             joinColumns = @JoinColumn(name = "role_name"),
-            inverseJoinColumns = @JoinColumn(name = "permission_name")
-    )
+            inverseJoinColumns = @JoinColumn(name = "permission_name"))
     Set<Permission> permissions;
 }

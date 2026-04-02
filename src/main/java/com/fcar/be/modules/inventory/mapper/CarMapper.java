@@ -1,10 +1,11 @@
 package com.fcar.be.modules.inventory.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
 import com.fcar.be.modules.inventory.dto.request.CarImportReq;
 import com.fcar.be.modules.inventory.dto.response.CarDetailRes;
 import com.fcar.be.modules.inventory.entity.Car;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CarMapper {

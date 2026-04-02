@@ -1,14 +1,17 @@
 package com.fcar.be.modules.marketing.entity;
 
-import com.fcar.be.modules.marketing.enums.DiscountType;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import com.fcar.be.modules.marketing.enums.DiscountType;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter

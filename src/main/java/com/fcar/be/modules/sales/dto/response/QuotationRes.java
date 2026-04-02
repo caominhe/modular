@@ -1,10 +1,12 @@
 package com.fcar.be.modules.sales.dto.response;
 
-import com.fcar.be.modules.sales.enums.QuotationStatus;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import com.fcar.be.modules.sales.enums.QuotationStatus;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder

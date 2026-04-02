@@ -1,10 +1,12 @@
 package com.fcar.be.modules.crm.dto.response;
 
+import java.time.LocalDateTime;
+
 import com.fcar.be.modules.crm.enums.LeadSource;
 import com.fcar.be.modules.crm.enums.LeadStatus;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import java.time.LocalDateTime;
 
 @Data
 @Builder

@@ -1,12 +1,13 @@
 package com.fcar.be.modules.marketing.dto.response;
 
-import com.fcar.be.modules.marketing.enums.DiscountType;
-import com.fcar.be.modules.marketing.enums.VoucherStatus;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import com.fcar.be.modules.marketing.enums.DiscountType;
+import com.fcar.be.modules.marketing.enums.VoucherStatus;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder

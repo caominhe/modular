@@ -1,12 +1,13 @@
 package com.fcar.be.modules.finance.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
 import com.fcar.be.modules.finance.dto.request.PaymentProcessReq;
 import com.fcar.be.modules.finance.dto.response.HandoverRes;
 import com.fcar.be.modules.finance.dto.response.PaymentRes;
 import com.fcar.be.modules.finance.entity.Handover;
 import com.fcar.be.modules.finance.entity.Payment;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface FinanceMapper {

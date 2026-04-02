@@ -1,9 +1,10 @@
-
 // # DTO quy định cấu trúc JSON trả về khi xảy ra lỗi
 package com.fcar.be.core.exception;
 
 import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -16,6 +17,7 @@ import lombok.experimental.FieldDefaults;
 public class ErrorResponse {
     int code;
     String message;
+
     @Builder.Default
     LocalDateTime timestamp = LocalDateTime.now();
 }

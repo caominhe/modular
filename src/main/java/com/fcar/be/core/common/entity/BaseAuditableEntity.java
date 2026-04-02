@@ -1,17 +1,16 @@
-
 // # Lớp cha chứa sẵn các trường: createdAt, updatedAt, createdBy
 package com.fcar.be.core.common.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedBy;
+
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -30,12 +29,4 @@ public abstract class BaseAuditableEntity {
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime updatedAt;
-
-    @CreatedBy
-    @Column(updatable = false)
-    private String createdBy;
-
-    @LastModifiedBy
-    @Column(insertable = false)
-    private String updatedBy;
 }

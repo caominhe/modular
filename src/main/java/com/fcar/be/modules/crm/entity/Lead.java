@@ -1,14 +1,17 @@
 package com.fcar.be.modules.crm.entity;
 
-import com.fcar.be.modules.crm.enums.LeadSource;
-import com.fcar.be.modules.crm.enums.LeadStatus;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import com.fcar.be.modules.crm.enums.LeadSource;
+import com.fcar.be.modules.crm.enums.LeadStatus;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter

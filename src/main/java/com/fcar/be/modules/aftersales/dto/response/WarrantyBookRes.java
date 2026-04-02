@@ -1,10 +1,12 @@
 package com.fcar.be.modules.aftersales.dto.response;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
@@ -16,5 +18,7 @@ public class WarrantyBookRes {
     LocalDate startDate;
     LocalDate endDate;
     LocalDateTime createdAt;
+
+    @JsonProperty("isExpired")
     boolean isExpired; // Thuộc tính tính toán thêm cho Frontend
 }

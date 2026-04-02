@@ -1,4 +1,3 @@
-
 package com.fcar.be.modules.identity.dto.request;
 
 import lombok.*;

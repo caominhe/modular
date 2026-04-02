@@ -20,6 +20,7 @@ spring:
     username: root                        # Tài khoản MySQL
     password: 123123123                   # Mật khẩu MySQL
     driver-class-name: com.mysql.cj.jdbc.Driver
+
     # Tối ưu hóa Connection Pool (HikariCP)
     hikari:
       maximum-pool-size: 10
@@ -39,8 +40,7 @@ spring:
   # ===================================================================
   jpa:
     hibernate:
-      ddl-auto: validate                  # Validate code Java với Database, không tự tạo bảng
-
+      ddl-auto: none                # Validate code Java với Database, không tự tạo bảng
     show-sql: true
     open-in-view: false
 
@@ -54,17 +54,17 @@ spring:
   # 5. CẤU HÌNH OAUTH2 (ĐĂNG NHẬP GOOGLE/FACEBOOK)
   # Đã được gom vào đúng phân cấp của nhánh "spring"
   # ===================================================================
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: "ĐIỀN_CLIENT_ID_CỦA_BẠN_VÀO_ĐÂY.apps.googleusercontent.com"
-            client-secret: "ĐIỀN_CLIENT_SECRET_CỦA_BẠN_VÀO_ĐÂY"
-            scope:
-              - email
-              - profile
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-id: "ĐIỀN_CLIENT_ID_CỦA_BẠN_VÀO_ĐÂY.apps.googleusercontent.com"
+#            client-secret: "ĐIỀN_CLIENT_SECRET_CỦA_BẠN_VÀO_ĐÂY"
+#            scope:
+#              - email
+#              - profile
+#            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
 
 # ===================================================================
 # 6. CẤU HÌNH BẢO MẬT & JWT TOKEN (Tự định nghĩa)

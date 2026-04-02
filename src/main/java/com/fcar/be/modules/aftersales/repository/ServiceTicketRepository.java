@@ -1,10 +1,11 @@
 package com.fcar.be.modules.aftersales.repository;
 
-import com.fcar.be.modules.aftersales.entity.ServiceTicket;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.fcar.be.modules.aftersales.entity.ServiceTicket;
 
 @Repository
 public interface ServiceTicketRepository extends JpaRepository<ServiceTicket, Long> {

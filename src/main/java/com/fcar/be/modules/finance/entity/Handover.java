@@ -1,11 +1,13 @@
 package com.fcar.be.modules.finance.entity;
 
-import com.fcar.be.modules.finance.enums.HandoverStatus;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
+
+import com.fcar.be.modules.finance.enums.HandoverStatus;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

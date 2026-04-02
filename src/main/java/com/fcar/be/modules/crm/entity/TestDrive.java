@@ -1,11 +1,13 @@
 package com.fcar.be.modules.crm.entity;
 
-import com.fcar.be.modules.crm.enums.TestDriveStatus;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
+
+import com.fcar.be.modules.crm.enums.TestDriveStatus;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

@@ -1,12 +1,12 @@
-
 // # @RestControllerAdvice hứng mọi lỗi và trả về ErrorResponse
 package com.fcar.be.core.exception;
 
-import com.fcar.be.core.common.dto.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import com.fcar.be.core.common.dto.ApiResponse;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

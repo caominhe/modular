@@ -1,5 +1,12 @@
 package com.fcar.be.modules.aftersales.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.fcar.be.core.exception.AppException;
 import com.fcar.be.core.exception.ErrorCode;
 import com.fcar.be.modules.aftersales.dto.request.ServiceTicketCreateReq;
@@ -12,13 +19,8 @@ import com.fcar.be.modules.aftersales.mapper.AftersalesMapper;
 import com.fcar.be.modules.aftersales.repository.ServiceTicketRepository;
 import com.fcar.be.modules.aftersales.repository.WarrantyBookRepository;
 import com.fcar.be.modules.aftersales.service.AftersalesService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +52,8 @@ public class AftersalesServiceImpl implements AftersalesService {
 
     @Override
     public WarrantyBookRes getWarrantyByVin(String carVin) {
-        WarrantyBook warranty = warrantyRepository.findByCarVin(carVin)
+        WarrantyBook warranty = warrantyRepository
+                .findByCarVin(carVin)
                 .orElseThrow(() -> new AppException(ErrorCode.WARRANTY_NOT_FOUND));
         return enrichWarrantyRes(warranty);
     }
@@ -58,7 +61,8 @@ public class AftersalesServiceImpl implements AftersalesService {
     @Override
     @Transactional
     public ServiceTicketRes createServiceTicket(ServiceTicketCreateReq request) {
-        WarrantyBook warranty = warrantyRepository.findByCarVin(request.getCarVin())
+        WarrantyBook warranty = warrantyRepository
+                .findByCarVin(request.getCarVin())
                 .orElseThrow(() -> new AppException(ErrorCode.WARRANTY_NOT_FOUND));
 
         ServiceTicket ticket = aftersalesMapper.toServiceTicket(request);
@@ -70,7 +74,8 @@ public class AftersalesServiceImpl implements AftersalesService {
 
     @Override
     public List<ServiceTicketRes> getServiceHistory(String carVin) {
-        WarrantyBook warranty = warrantyRepository.findByCarVin(carVin)
+        WarrantyBook warranty = warrantyRepository
+                .findByCarVin(carVin)
                 .orElseThrow(() -> new AppException(ErrorCode.WARRANTY_NOT_FOUND));
 
         return ticketRepository.findByWarrantyIdOrderByServiceDateDesc(warranty.getId()).stream()

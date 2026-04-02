@@ -1,14 +1,17 @@
 package com.fcar.be.modules.identity.controller;
 
+import java.util.List;
+
+import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.*;
+
 import com.fcar.be.core.common.dto.ApiResponse;
 import com.fcar.be.modules.identity.dto.request.UserCreationRequest;
 import com.fcar.be.modules.identity.dto.response.UserResponse;
 import com.fcar.be.modules.identity.service.UserService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/users")

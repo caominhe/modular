@@ -1,9 +1,9 @@
 package com.fcar.be.modules.crm.service;
 
+import java.util.List;
+
 import com.fcar.be.modules.crm.dto.request.LeadCreateReq;
 import com.fcar.be.modules.crm.dto.response.LeadRes;
-
-import java.util.List;
 
 public interface LeadService {
     LeadRes createLead(LeadCreateReq request);

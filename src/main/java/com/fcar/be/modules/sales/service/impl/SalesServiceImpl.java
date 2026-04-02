@@ -1,5 +1,11 @@
 package com.fcar.be.modules.sales.service.impl;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.fcar.be.core.exception.AppException;
 import com.fcar.be.core.exception.ErrorCode;
 import com.fcar.be.modules.inventory.dto.response.CarDetailRes;
@@ -18,12 +24,8 @@ import com.fcar.be.modules.sales.mapper.SalesMapper;
 import com.fcar.be.modules.sales.repository.ContractRepository;
 import com.fcar.be.modules.sales.repository.QuotationRepository;
 import com.fcar.be.modules.sales.service.SalesService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -49,18 +51,15 @@ public class SalesServiceImpl implements SalesService {
         if (request.getVoucherCode() != null && !request.getVoucherCode().isBlank()) {
             VoucherRes voucher = marketingService.useVoucher(request.getVoucherCode(), customerUserId);
 
-            // Giả định bạn đã thêm discountType và discountValue vào VoucherRes như bài trước
-            /*
             if (voucher.getDiscountType() == DiscountType.PERCENT) {
-                BigDecimal discountAmt = totalAmount.multiply(voucher.getDiscountValue())
-                                                    .divide(BigDecimal.valueOf(100));
+                // Tính: 1 tỷ - (1 tỷ * 5 / 100)
+                BigDecimal discountAmt =
+                        totalAmount.multiply(voucher.getDiscountValue()).divide(BigDecimal.valueOf(100));
                 finalAmount = totalAmount.subtract(discountAmt);
             } else {
+                // Trừ thẳng tiền mặt
                 finalAmount = totalAmount.subtract(voucher.getDiscountValue());
             }
-            */
-            // Tạm thời fix cứng giảm 10 triệu để code chạy được nếu bạn chưa update VoucherRes
-            finalAmount = totalAmount.subtract(new BigDecimal("10000000"));
         }
 
         // 3. Lưu báo giá
@@ -84,7 +83,8 @@ public class SalesServiceImpl implements SalesService {
             throw new AppException(ErrorCode.CONTRACT_EXISTED);
         }
 
-        Quotation quotation = quotationRepository.findById(quotationId)
+        Quotation quotation = quotationRepository
+                .findById(quotationId)
                 .orElseThrow(() -> new AppException(ErrorCode.QUOTATION_NOT_FOUND));
 
         if (quotation.getStatus() != QuotationStatus.ACCEPTED) {
@@ -102,5 +102,15 @@ public class SalesServiceImpl implements SalesService {
                 .build();
 
         return salesMapper.toContractRes(contractRepository.save(contract));
+    }
+
+    @Override
+    @Transactional
+    public QuotationRes acceptQuotation(Long quotationId) {
+        Quotation quotation = quotationRepository
+                .findById(quotationId)
+                .orElseThrow(() -> new AppException(ErrorCode.QUOTATION_NOT_FOUND));
+        quotation.setStatus(QuotationStatus.ACCEPTED);
+        return salesMapper.toQuotationRes(quotationRepository.save(quotation));
     }
 }

@@ -1,16 +1,18 @@
 package com.fcar.be.core.security;
 
-import com.fcar.be.modules.identity.entity.User;
-import com.fcar.be.modules.identity.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fcar.be.modules.identity.entity.User;
+import com.fcar.be.modules.identity.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -20,18 +22,19 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
+        User user = userRepository
+                .findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
         // Map roles and permissions
-        if(user.getRoles() != null) {
+        if (user.getRoles() != null) {
             user.getRoles().forEach(role -> {
                 authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-                if(role.getPermissions() != null) {
-                    role.getPermissions().forEach(permission ->
-                            authorities.add(new SimpleGrantedAuthority(permission.getName())));
+                if (role.getPermissions() != null) {
+                    role.getPermissions()
+                            .forEach(permission -> authorities.add(new SimpleGrantedAuthority(permission.getName())));
                 }
             });
         }

@@ -1,9 +1,9 @@
 package com.fcar.be.modules.identity.repository;
 
-import com.fcar.be.modules.identity.entity.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.fcar.be.modules.identity.entity.Permission;
+
 @Repository
-public interface PermissionRepository extends JpaRepository<Permission, String> {
-}
+public interface PermissionRepository extends JpaRepository<Permission, String> {}

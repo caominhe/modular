@@ -1,12 +1,12 @@
-
 // # DTO bọc dữ liệu trả về thành công (code, message, data)
 package com.fcar.be.core.common.dto;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 @Data
 @Builder

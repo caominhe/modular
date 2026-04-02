@@ -2,6 +2,7 @@ package com.fcar.be.modules.sales.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -9,7 +10,11 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class QuotationCreateReq {
-    @NotNull Long leadId;
-    @NotBlank String carVin;
+    @NotNull
+    Long leadId;
+
+    @NotBlank
+    String carVin;
+
     String voucherCode; // Có thể null nếu khách không có mã
 }
