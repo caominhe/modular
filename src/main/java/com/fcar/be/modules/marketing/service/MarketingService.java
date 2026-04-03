@@ -15,4 +15,7 @@ public interface MarketingService {
     VoucherRes claimVoucher(String code, Long userId);
 
     VoucherRes useVoucher(String code, Long userId);
+
+    // Thay đổi tham số hàm này
+    VoucherRes validateAndUseVoucher(String code, Long userId, Long masterDataId);
 }

@@ -8,6 +8,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fcar.be.modules.inventory.enums.CarStatus;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -38,9 +40,11 @@ public class Car {
     @Column(name = "showroom_id")
     Long showroomId;
 
+    // --- CẬP NHẬT TẠI ĐÂY ---
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default
-    String status = "IN_WAREHOUSE";
+    CarStatus status = CarStatus.IN_WAREHOUSE;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)

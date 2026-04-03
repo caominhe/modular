@@ -42,22 +42,23 @@ public class SalesServiceImpl implements SalesService {
     @Override
     @Transactional
     public QuotationRes createQuotation(QuotationCreateReq request, Long customerUserId) {
-        // 1. Gọi Inventory lấy giá xe gốc
+        // 1. Gọi Inventory lấy giá xe gốc và thông tin MasterData
         CarDetailRes car = carService.getCarByVin(request.getCarVin());
         BigDecimal totalAmount = car.getBasePrice();
         BigDecimal finalAmount = totalAmount;
 
-        // 2. Nếu có Voucher, gọi Marketing để kiểm tra, đổi trạng thái và áp dụng giảm giá
+        // 2. Áp dụng Voucher kèm theo MasterDataId của xe đang định mua
         if (request.getVoucherCode() != null && !request.getVoucherCode().isBlank()) {
-            VoucherRes voucher = marketingService.useVoucher(request.getVoucherCode(), customerUserId);
+            VoucherRes voucher = marketingService.validateAndUseVoucher(
+                    request.getVoucherCode(),
+                    customerUserId,
+                    car.getMasterDataId() // <-- Truyền ID dòng xe vật lý vào đây
+            );
 
             if (voucher.getDiscountType() == DiscountType.PERCENT) {
-                // Tính: 1 tỷ - (1 tỷ * 5 / 100)
-                BigDecimal discountAmt =
-                        totalAmount.multiply(voucher.getDiscountValue()).divide(BigDecimal.valueOf(100));
+                BigDecimal discountAmt = totalAmount.multiply(voucher.getDiscountValue()).divide(BigDecimal.valueOf(100));
                 finalAmount = totalAmount.subtract(discountAmt);
             } else {
-                // Trừ thẳng tiền mặt
                 finalAmount = totalAmount.subtract(voucher.getDiscountValue());
             }
         }
@@ -113,4 +114,5 @@ public class SalesServiceImpl implements SalesService {
         quotation.setStatus(QuotationStatus.ACCEPTED);
         return salesMapper.toQuotationRes(quotationRepository.save(quotation));
     }
+
 }

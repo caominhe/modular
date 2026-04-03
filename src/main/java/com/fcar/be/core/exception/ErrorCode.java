@@ -32,6 +32,7 @@ public enum ErrorCode {
     CAR_EXISTED(2002, "Car with this VIN already exists in the system", HttpStatus.BAD_REQUEST),
     ENGINE_NUMBER_EXISTED(2003, "Car with this engine number already exists", HttpStatus.BAD_REQUEST),
     MASTER_DATA_NOT_FOUND(2004, "Master data (Car model) not found", HttpStatus.NOT_FOUND),
+    CAR_INVALID_STATUS(2005, "Car is not in a valid status for this action", HttpStatus.BAD_REQUEST),
 
     // ==============================================================================
     // [MODULE 2] MARKETING: Chiến dịch & Voucher (3xxx)
@@ -41,6 +42,7 @@ public enum ErrorCode {
     VOUCHER_EXPIRED(3003, "Voucher has expired", HttpStatus.BAD_REQUEST),
     VOUCHER_INVALID_STATUS(3004, "Voucher is not in the correct state to perform this action", HttpStatus.BAD_REQUEST),
     VOUCHER_NOT_OWNED(3005, "You do not own this voucher or it does not exist", HttpStatus.FORBIDDEN),
+    VOUCHER_NOT_APPLICABLE(3006, "This voucher is not applicable for the selected car model", HttpStatus.BAD_REQUEST),
 
     // ==============================================================================
     // [MODULE 3] CRM: Khách hàng tiềm năng & Lái thử (4xxx)
