@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.fcar.be.core.common.dto.ApiResponse;
 import com.fcar.be.modules.inventory.dto.request.CarImportReq;
+import com.fcar.be.modules.inventory.dto.request.CarTransferReq;
 import com.fcar.be.modules.inventory.dto.response.CarDetailRes;
 import com.fcar.be.modules.inventory.service.CarService;
 
@@ -38,6 +39,28 @@ public class CarController {
     public ApiResponse<CarDetailRes> getCarByVin(@PathVariable String vin) {
         return ApiResponse.<CarDetailRes>builder()
                 .result(carService.getCarByVin(vin))
+                .build();
+    }
+
+    @PutMapping("/{vin}/transfer")
+    public ApiResponse<CarDetailRes> transferCar(
+            @PathVariable String vin, @RequestBody @Valid CarTransferReq request) {
+        return ApiResponse.<CarDetailRes>builder()
+                .result(carService.transferCar(vin, request))
+                .build();
+    }
+
+    @PutMapping("/{vin}/lock")
+    public ApiResponse<CarDetailRes> lockCar(@PathVariable String vin) {
+        return ApiResponse.<CarDetailRes>builder()
+                .result(carService.lockCar(vin))
+                .build();
+    }
+
+    @PutMapping("/{vin}/sell")
+    public ApiResponse<CarDetailRes> sellCar(@PathVariable String vin) {
+        return ApiResponse.<CarDetailRes>builder()
+                .result(carService.sellCar(vin))
                 .build();
     }
 }

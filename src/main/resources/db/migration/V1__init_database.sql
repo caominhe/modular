@@ -72,8 +72,10 @@ CREATE TABLE events (
     description TEXT COMMENT 'Mô tả chi tiết',
     start_date DATETIME NOT NULL COMMENT 'Ngày bắt đầu',
     end_date DATETIME NOT NULL COMMENT 'Ngày kết thúc',
-    showroom_id BIGINT COMMENT 'Áp dụng cho showroom nào (Reference ID)',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    showroom_id BIGINT COMMENT 'Áp dụng cho showroom nào',
+    campaign_id BIGINT COMMENT 'Chương trình khuyến mãi áp dụng (Tặng Voucher)',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE SET NULL
 ) COMMENT='Bảng quản lý sự kiện';
 
 CREATE TABLE campaigns (

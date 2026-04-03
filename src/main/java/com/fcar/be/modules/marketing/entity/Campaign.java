@@ -12,6 +12,7 @@ import com.fcar.be.modules.marketing.enums.DiscountType;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -36,6 +37,13 @@ public class Campaign {
 
     @Column(name = "discount_value", nullable = false)
     BigDecimal discountValue;
+
+    // --- CẬP NHẬT TẠI ĐÂY ---
+    // Danh sách ID dòng xe được áp dụng khuyến mãi (Rỗng = áp dụng tất cả)
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "campaign_applicable_cars", joinColumns = @JoinColumn(name = "campaign_id"))
+    @Column(name = "master_data_id")
+    Set<Long> applicableMasterDataIds;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
