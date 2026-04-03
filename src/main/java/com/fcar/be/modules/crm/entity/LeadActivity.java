@@ -1,15 +1,10 @@
-package com.fcar.be.modules.sales.entity;
+package com.fcar.be.modules.crm.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
-
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.fcar.be.modules.sales.enums.QuotationStatus;
-
+import com.fcar.be.modules.crm.enums.LeadStatus;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,35 +15,31 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "quotations")
+@Table(name = "lead_activities")
 @EntityListeners(AuditingEntityListener.class)
-public class Quotation {
+public class LeadActivity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "lead_id", nullable = false)
-    Long leadId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lead_id", nullable = false)
+    Lead lead;
 
-    @Column(name = "car_vin", nullable = false)
-    String carVin;
+    @Column(name = "customer_user_id")
+    Long customerUserId; // Ghi nhận ID khách hàng
 
-    @Column(name = "voucher_code")
-    String voucherCode;
-
-    @Column(name = "total_amount", nullable = false)
-    BigDecimal totalAmount;
-
-    @Column(name = "final_amount", nullable = false)
-    BigDecimal finalAmount;
+    @Column(name = "demo_car_id")
+    Long demoCarId; // Ghi nhận ID xe lái thử (Nếu có)
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @Builder.Default
-    QuotationStatus status = QuotationStatus.DRAFT;
+    LeadStatus status; // Trạng thái của lần tương tác này
+
+    @Column(columnDefinition = "TEXT")
+    String comment; // Nhận xét, đánh giá của khách
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     LocalDateTime createdAt;
-
 }

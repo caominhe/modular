@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fcar.be.core.exception.AppException;
 import com.fcar.be.core.exception.ErrorCode;
+import com.fcar.be.modules.crm.enums.LeadStatus;
+import com.fcar.be.modules.crm.service.LeadService;
 import com.fcar.be.modules.inventory.dto.response.CarDetailRes;
 import com.fcar.be.modules.inventory.service.CarService;
 import com.fcar.be.modules.marketing.dto.response.VoucherRes;
@@ -35,24 +37,25 @@ public class SalesServiceImpl implements SalesService {
     private final ContractRepository contractRepository;
     private final SalesMapper salesMapper;
 
-    // Tiêm (Inject) Service từ các Module khác vào
+    // Tiêm (Inject) Service từ các Module khác vào để giao tiếp chéo
+    private final LeadService leadService;
     private final CarService carService;
     private final MarketingService marketingService;
 
     @Override
     @Transactional
     public QuotationRes createQuotation(QuotationCreateReq request, Long customerUserId) {
-        // 1. Gọi Inventory lấy giá xe gốc và thông tin MasterData
+        // 1. Gọi Inventory lấy giá xe gốc và thông tin MasterData bằng số VIN
         CarDetailRes car = carService.getCarByVin(request.getCarVin());
         BigDecimal totalAmount = car.getBasePrice();
         BigDecimal finalAmount = totalAmount;
 
-        // 2. Áp dụng Voucher kèm theo MasterDataId của xe đang định mua
+        // 2. Kiểm duyệt và áp dụng Voucher (Gọi sang module Marketing)
         if (request.getVoucherCode() != null && !request.getVoucherCode().isBlank()) {
             VoucherRes voucher = marketingService.validateAndUseVoucher(
                     request.getVoucherCode(),
                     customerUserId,
-                    car.getMasterDataId() // <-- Truyền ID dòng xe vật lý vào đây
+                    car.getMasterDataId() // Truyền ID dòng xe vật lý vào để check điều kiện
             );
 
             if (voucher.getDiscountType() == DiscountType.PERCENT) {
@@ -63,7 +66,7 @@ public class SalesServiceImpl implements SalesService {
             }
         }
 
-        // 3. Lưu báo giá
+        // 3. Khởi tạo Báo giá
         Quotation quotation = Quotation.builder()
                 .leadId(request.getLeadId())
                 .carVin(request.getCarVin())
@@ -73,26 +76,49 @@ public class SalesServiceImpl implements SalesService {
                 .status(QuotationStatus.DRAFT)
                 .build();
 
+        // 4. Lưu vào Database
+        Quotation savedQuotation = quotationRepository.save(quotation);
+
+        // 5. Tự động nhảy phễu CRM sang trạng thái "Đang Báo Giá" (QUOTING)
+        if (request.getLeadId() != null) {
+            leadService.updateLeadStatus(request.getLeadId(), LeadStatus.QUOTING);
+        }
+
+        return salesMapper.toQuotationRes(savedQuotation);
+    }
+
+    @Override
+    @Transactional
+    public QuotationRes acceptQuotation(Long quotationId) {
+        Quotation quotation = quotationRepository.findById(quotationId)
+                .orElseThrow(() -> new AppException(ErrorCode.QUOTATION_NOT_FOUND));
+
+        quotation.setStatus(QuotationStatus.ACCEPTED);
         return salesMapper.toQuotationRes(quotationRepository.save(quotation));
     }
 
     @Override
     @Transactional
     public ContractRes createContract(Long quotationId, Long salesId) {
-        // Kiểm tra xem báo giá đã có hợp đồng chưa (quan hệ 1-1)
+        // 1. Kiểm tra xem báo giá đã có hợp đồng chưa (quan hệ 1-1)
         if (contractRepository.existsByQuotationId(quotationId)) {
             throw new AppException(ErrorCode.CONTRACT_EXISTED);
         }
 
-        Quotation quotation = quotationRepository
-                .findById(quotationId)
+        // 2. Kiểm tra Báo giá có hợp lệ không
+        Quotation quotation = quotationRepository.findById(quotationId)
                 .orElseThrow(() -> new AppException(ErrorCode.QUOTATION_NOT_FOUND));
 
         if (quotation.getStatus() != QuotationStatus.ACCEPTED) {
             throw new AppException(ErrorCode.QUOTATION_NOT_ACCEPTED);
         }
 
-        // Sinh số hợp đồng ngẫu nhiên (VD: HD-8F3A9)
+        // 3. LUỒNG 4: TỰ ĐỘNG KHÓA XE (LOCK CAR)
+        // Gọi sang module Inventory để chuyển xe từ IN_WAREHOUSE sang LOCKED.
+        // Nếu xe đã bị Sales khác khóa, CarService sẽ throw Exception và giao dịch này sẽ bị Rollback.
+        carService.lockCar(quotation.getCarVin());
+
+        // 4. Sinh số hợp đồng ngẫu nhiên (VD: HD-8F3A9)
         String contractNo = "HD-" + UUID.randomUUID().toString().substring(0, 5).toUpperCase();
 
         Contract contract = Contract.builder()
@@ -102,17 +128,8 @@ public class SalesServiceImpl implements SalesService {
                 .status(ContractStatus.PENDING)
                 .build();
 
+        // 5. Có thể gọi LeadService cập nhật phễu thành WON ở bước thanh toán hoàn tất (Finance),
+        // ở bước này khách chỉ mới lên hợp đồng, chờ cọc tiền.
         return salesMapper.toContractRes(contractRepository.save(contract));
     }
-
-    @Override
-    @Transactional
-    public QuotationRes acceptQuotation(Long quotationId) {
-        Quotation quotation = quotationRepository
-                .findById(quotationId)
-                .orElseThrow(() -> new AppException(ErrorCode.QUOTATION_NOT_FOUND));
-        quotation.setStatus(QuotationStatus.ACCEPTED);
-        return salesMapper.toQuotationRes(quotationRepository.save(quotation));
-    }
-
 }
