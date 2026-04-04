@@ -20,4 +20,6 @@ public class LeadCreateReq {
     String phone;
 
     LeadSource source;
+
+    Long showroomId; // Khách hàng truyền lên ID Showroom muốn đăng ký
 }

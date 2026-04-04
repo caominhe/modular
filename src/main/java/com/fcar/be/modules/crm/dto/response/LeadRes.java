@@ -16,6 +16,7 @@ public class LeadRes {
     String fullName;
     String phone;
     LeadSource source;
+    Long showroomId;
     Long assignedSalesId;
     LeadStatus status;
     LocalDateTime createdAt;

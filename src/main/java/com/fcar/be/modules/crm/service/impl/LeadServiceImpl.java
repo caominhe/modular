@@ -32,7 +32,7 @@ public class LeadServiceImpl implements LeadService {
     @Transactional
     public LeadRes createLead(LeadCreateReq request) {
         Lead lead = crmMapper.toLead(request);
-        lead.setStatus(LeadStatus.NEW);
+        lead.setStatus(LeadStatus.NEEDS_CONSULTATION);
         return crmMapper.toLeadRes(leadRepository.save(lead));
     }
 
@@ -43,8 +43,8 @@ public class LeadServiceImpl implements LeadService {
                 .orElseThrow(() -> new AppException(ErrorCode.LEAD_NOT_FOUND)); // Cần tạo mã lỗi LEAD_NOT_FOUND sau
 
         lead.setAssignedSalesId(salesId);
-        lead.setStatus(LeadStatus.NEEDS_CONSULTATION); // Chuyển thành Cần tư vấn
-
+        // Bỏ thao tác đổi status vì mặc định đã là NEEDS_CONSULTATION
+        // hoặc khách có thể đang ở TEST_DRIVE_SCHEDULED
         return crmMapper.toLeadRes(leadRepository.save(lead));
     }
 

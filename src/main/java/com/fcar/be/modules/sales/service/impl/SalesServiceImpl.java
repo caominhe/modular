@@ -79,10 +79,7 @@ public class SalesServiceImpl implements SalesService {
         // 4. Lưu vào Database
         Quotation savedQuotation = quotationRepository.save(quotation);
 
-        // 5. Tự động nhảy phễu CRM sang trạng thái "Đang Báo Giá" (QUOTING)
-        if (request.getLeadId() != null) {
-            leadService.updateLeadStatus(request.getLeadId(), LeadStatus.QUOTING);
-        }
+        // (Đã loại bỏ logic gọi chéo cập nhật trạng thái QUOTING trên bảng Lead để tránh dư thừa dữ liệu)
 
         return salesMapper.toQuotationRes(savedQuotation);
     }

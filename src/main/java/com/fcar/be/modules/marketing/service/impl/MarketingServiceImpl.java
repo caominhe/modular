@@ -124,6 +124,7 @@ public class MarketingServiceImpl implements MarketingService {
                 .fullName(user.getFullName())
                 .phone(user.getPhone() != null ? user.getPhone() : "0000000000") // Tránh lỗi null phone
                 .source(com.fcar.be.modules.crm.enums.LeadSource.EVENT)
+                .showroomId(event.getShowroomId()) // Tự động định tuyến Lead về Showroom tổ chức Event
                 .build();
         leadService.createLead(leadReq);
 
