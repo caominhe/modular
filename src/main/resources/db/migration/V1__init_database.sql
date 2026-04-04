@@ -105,8 +105,9 @@ CREATE TABLE leads (
     full_name VARCHAR(100) NOT NULL COMMENT 'Tên khách hàng',
     phone VARCHAR(20) NOT NULL COMMENT 'SĐT liên hệ',
     source VARCHAR(50) COMMENT 'Nguồn khách: WEB, EVENT, REFERRAL',
+    showroom_id BIGINT COMMENT 'ID Showroom khách chọn lúc đăng ký',
     assigned_sales_id BIGINT COMMENT 'Nhân viên sales phụ trách',
-    status VARCHAR(20) NOT NULL DEFAULT 'NEW' COMMENT 'Trạng thái: NEW, CONTACTING, APPOINTED, WON, LOST',
+    status VARCHAR(20) NOT NULL DEFAULT 'NEEDS_CONSULTATION' COMMENT 'Trạng thái: NEEDS_CONSULTATION, TEST_DRIVE_SCHEDULED, TEST_DRIVEN',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
     FOREIGN KEY (assigned_sales_id) REFERENCES users(id) ON DELETE SET NULL

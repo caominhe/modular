@@ -39,13 +39,16 @@ public class Lead {
     @Enumerated(EnumType.STRING)
     LeadSource source;
 
+    @Column(name = "showroom_id")
+    Long showroomId; // ID Showroom mà khách hàng quan tâm/chọn
+
     @Column(name = "assigned_sales_id")
     Long assignedSalesId; // ID nhân viên Sales phụ trách
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default
-    LeadStatus status = LeadStatus.NEW;
+    LeadStatus status = LeadStatus.NEEDS_CONSULTATION;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
