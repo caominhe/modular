@@ -54,17 +54,21 @@ spring:
   # 5. CẤU HÌNH OAUTH2 (ĐĂNG NHẬP GOOGLE/FACEBOOK)
   # Đã được gom vào đúng phân cấp của nhánh "spring"
   # ===================================================================
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          google:
-#            client-id: "ĐIỀN_CLIENT_ID_CỦA_BẠN_VÀO_ĐÂY.apps.googleusercontent.com"
-#            client-secret: "ĐIỀN_CLIENT_SECRET_CỦA_BẠN_VÀO_ĐÂY"
-#            scope:
-#              - email
-#              - profile
-#            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+security:
+  oauth2:
+    client:
+      registration:
+        google:
+          client-id: "ĐIỀN_CLIENT_ID_CỦA_BẠN"
+          client-secret: "ĐIỀN_CLIENT_SECRET_CỦA_BẠN"
+          scope:
+            - email
+            - profile
+          redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+          authorization-grant-type: authorization_code # Đảm bảo sử dụng kiến trúc Authorization Code
+      provider:
+        google:
+          user-name-attribute: email
 
 # ===================================================================
 # 6. CẤU HÌNH BẢO MẬT & JWT TOKEN (Tự định nghĩa)
