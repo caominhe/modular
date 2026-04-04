@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fcar.be.core.exception.AppException;
 import com.fcar.be.core.exception.ErrorCode;
-import com.fcar.be.modules.crm.enums.LeadStatus;
 import com.fcar.be.modules.crm.service.LeadService;
 import com.fcar.be.modules.inventory.dto.response.CarDetailRes;
 import com.fcar.be.modules.inventory.service.CarService;

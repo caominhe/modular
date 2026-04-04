@@ -24,6 +24,8 @@ public enum ErrorCode {
     UNAUTHENTICATED(1006, "Unauthenticated. Please login.", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission to access this resource", HttpStatus.FORBIDDEN),
     INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
+    DONT_PENDING_ONBOARD(1009, "DONT_PENDING_ONBOARD", HttpStatus.BAD_REQUEST),
+
 
     // ==============================================================================
     // [MODULE 1] INVENTORY: Kho xe & Master Data (2xxx)

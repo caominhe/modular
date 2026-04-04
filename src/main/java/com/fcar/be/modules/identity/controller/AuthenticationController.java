@@ -20,4 +20,11 @@ public class AuthenticationController {
         var result = authenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder().result(result).build();
     }
+
+
+    @PostMapping("/google/exchange")
+    public ApiResponse<AuthenticationResponse> exchangeGoogleCode(@RequestParam("code") String code) {
+        var result = authenticationService.authenticateWithGoogle(code);
+        return ApiResponse.<AuthenticationResponse>builder().result(result).build();
+    }
 }

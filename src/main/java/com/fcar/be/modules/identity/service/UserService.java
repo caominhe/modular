@@ -15,6 +15,10 @@ import com.fcar.be.modules.identity.entity.User;
 import com.fcar.be.modules.identity.mapper.UserMapper;
 import com.fcar.be.modules.identity.repository.RoleRepository;
 import com.fcar.be.modules.identity.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
+import com.fcar.be.modules.identity.dto.request.UserOnboardRequest;
+
 
 import lombok.RequiredArgsConstructor;
 
@@ -45,4 +49,48 @@ public class UserService {
     public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
+
+    @Transactional
+    public UserResponse onboardUser(UserOnboardRequest request) {
+        // 1. Lấy username/email của user hiện hành từ JWT Token
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // 2. Tìm User trong DB
+        User user = userRepository.findByEmail(username) // Hoặc findByEmail tùy theo cách bạn định nghĩa trong UserRepository
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        // 3. Kiểm tra xem user có đúng là đang chờ onboard không (nếu bạn có thiết kế cột status)
+         if (!"PENDING_ONBOARD".equals(user.getStatus())) {
+           throw new AppException(ErrorCode.DONT_PENDING_ONBOARD);
+        }
+
+        // 4. Băm mật khẩu và cập nhật thông tin
+        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
+        user.setPhone(request.getPhone()); // Bỏ comment nếu Entity User của bạn có cột phone
+        user.setStatus("ACTIVE"); // Bỏ comment nếu Entity User của bạn có cột status
+
+        // 5. Lưu và trả về DTO
+        return userMapper.toUserResponse(userRepository.save(user));
+    }
+
+    public UserResponse getMyInfo() {
+        // Lấy email đang đăng nhập từ Security Context (lấy từ JWT Token)
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        // Tìm user trong DB
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        // Convert sang Response (bạn có thể dùng userMapper nếu có sẵn)
+        return UserResponse.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .avatar(user.getAvatar()) // <-- Thêm dòng này để trả về cho Frontend
+                .fullName(user.getFullName())
+                .phone(user.getPhone())
+                .status(user.getStatus())
+                .build();
+    }
+
+
 }

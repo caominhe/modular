@@ -22,9 +22,11 @@ CREATE TABLE roles_permissions (
 CREATE TABLE users (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE COMMENT 'Email đăng nhập (bắt buộc, không trùng)',
+    avatar VARCHAR(255) ,
     password_hash VARCHAR(255) COMMENT 'Mật khẩu đã băm (Null nếu login qua Google OAuth2)',
     full_name VARCHAR(100) NOT NULL COMMENT 'Họ và tên',
     phone VARCHAR(20) UNIQUE COMMENT 'Số điện thoại',
+    provider VARCHAR(20) COMMENT 'Nguồn đăng nhập: LOCAL, GOOGLE',
     showroom_id BIGINT COMMENT 'ID của showroom người này làm việc (Null nếu là Admin/Customer)',
     status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE' COMMENT 'Trạng thái: ACTIVE, INACTIVE, BANNED',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -66,6 +68,15 @@ CREATE TABLE cars (
 -- ==============================================================================
 -- MODULE 2: MARKETING (Sự kiện, Khuyến mãi & Voucher)
 -- ==============================================================================
+-- Đã đảo bảng campaigns lên trước để events có thể reference
+CREATE TABLE campaigns (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL COMMENT 'Tên chương trình khuyến mãi',
+    discount_type VARCHAR(20) NOT NULL COMMENT 'Loại: CASH, PERCENT, GIFT',
+    discount_value DECIMAL(15, 2) NOT NULL COMMENT 'Giá trị giảm (Số tiền hoặc %)',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+) COMMENT='Bảng quản lý chương trình khuyến mãi';
+
 CREATE TABLE events (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL COMMENT 'Tên sự kiện',
@@ -77,14 +88,6 @@ CREATE TABLE events (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE SET NULL
 ) COMMENT='Bảng quản lý sự kiện';
-
-CREATE TABLE campaigns (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL COMMENT 'Tên chương trình khuyến mãi',
-    discount_type VARCHAR(20) NOT NULL COMMENT 'Loại: CASH, PERCENT, GIFT',
-    discount_value DECIMAL(15, 2) NOT NULL COMMENT 'Giá trị giảm (Số tiền hoặc %)',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-) COMMENT='Bảng quản lý chương trình khuyến mãi';
 
 CREATE TABLE vouchers (
     code VARCHAR(50) PRIMARY KEY COMMENT 'Mã Voucher (VD: VIP2026)',
@@ -194,3 +197,15 @@ CREATE TABLE service_tickets (
     total_cost DECIMAL(15, 2) NOT NULL COMMENT 'Chi phí dịch vụ',
     FOREIGN KEY (warranty_id) REFERENCES warranty_books(id)
 ) COMMENT='Phiếu ghi nhận lịch sử sửa chữa/bảo dưỡng';
+
+-- ==============================================================================
+-- DỮ LIỆU KHỞI TẠO (MASTER DATA)
+-- ==============================================================================
+INSERT INTO roles (name, description) VALUES
+('ADMIN', 'Quản trị viên toàn hệ thống'),
+('SALES', 'Nhân viên tư vấn bán hàng'),
+('CUSTOMER', 'Khách hàng sử dụng dịch vụ');
+
+INSERT INTO master_data (brand, model, version, base_price) VALUES
+('Toyota', 'Camry', '2.0Q', 1050000000.00),
+('Ford', 'Ranger', 'Wildtrak 4x4', 979000000.00);

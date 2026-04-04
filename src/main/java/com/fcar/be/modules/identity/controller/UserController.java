@@ -10,6 +10,8 @@ import com.fcar.be.core.common.dto.ApiResponse;
 import com.fcar.be.modules.identity.dto.request.UserCreationRequest;
 import com.fcar.be.modules.identity.dto.response.UserResponse;
 import com.fcar.be.modules.identity.service.UserService;
+import com.fcar.be.modules.identity.dto.request.UserOnboardRequest;
+
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,4 +34,20 @@ public class UserController {
                 .result(userService.getAllUsers())
                 .build();
     }
+
+    @PutMapping("/onboard")
+    public ApiResponse<UserResponse> onboardUser(@RequestBody @Valid UserOnboardRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.onboardUser(request))
+                .build();
+    }
+
+    @GetMapping("/my-info")
+    public ApiResponse<UserResponse> getMyInfo() {
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.getMyInfo())
+                .build();
+    }
+
+
 }

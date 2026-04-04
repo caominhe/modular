@@ -37,7 +37,6 @@ public class MarketingServiceImpl implements MarketingService {
     private final EventRepository eventRepository;
     private final LeadService leadService;
     private final UserRepository userRepository;
-    private final LeadCreateReq leadCreateReq;
 
     @Override
     public Campaign createCampaign(CampaignCreateReq request) {
@@ -119,13 +118,14 @@ public class MarketingServiceImpl implements MarketingService {
         var user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         // 3. Tự động tạo Lead bên CRM Module
-        com.fcar.be.modules.crm.dto.request.LeadCreateReq leadReq = com.fcar.be.modules.crm.dto.request.LeadCreateReq.builder()
-                .userId(userId)
-                .fullName(user.getFullName())
-                .phone(user.getPhone() != null ? user.getPhone() : "0000000000") // Tránh lỗi null phone
-                .source(com.fcar.be.modules.crm.enums.LeadSource.EVENT)
-                .showroomId(event.getShowroomId()) // Tự động định tuyến Lead về Showroom tổ chức Event
-                .build();
+        com.fcar.be.modules.crm.dto.request.LeadCreateReq leadReq =
+                com.fcar.be.modules.crm.dto.request.LeadCreateReq.builder()
+                        .userId(userId)
+                        .fullName(user.getFullName())
+                        .phone(user.getPhone() != null ? user.getPhone() : "0000000000") // Tránh lỗi null phone
+                        .source(com.fcar.be.modules.crm.enums.LeadSource.EVENT)
+                        .showroomId(event.getShowroomId()) // Tự động định tuyến Lead về Showroom tổ chức Event
+                        .build();
         leadService.createLead(leadReq);
 
         // 4. Tìm và cấp Voucher (Marketing Module)
