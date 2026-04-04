@@ -56,10 +56,11 @@ public class SalesServiceImpl implements SalesService {
                     request.getVoucherCode(),
                     customerUserId,
                     car.getMasterDataId() // Truyền ID dòng xe vật lý vào để check điều kiện
-            );
+                    );
 
             if (voucher.getDiscountType() == DiscountType.PERCENT) {
-                BigDecimal discountAmt = totalAmount.multiply(voucher.getDiscountValue()).divide(BigDecimal.valueOf(100));
+                BigDecimal discountAmt =
+                        totalAmount.multiply(voucher.getDiscountValue()).divide(BigDecimal.valueOf(100));
                 finalAmount = totalAmount.subtract(discountAmt);
             } else {
                 finalAmount = totalAmount.subtract(voucher.getDiscountValue());
@@ -90,7 +91,8 @@ public class SalesServiceImpl implements SalesService {
     @Override
     @Transactional
     public QuotationRes acceptQuotation(Long quotationId) {
-        Quotation quotation = quotationRepository.findById(quotationId)
+        Quotation quotation = quotationRepository
+                .findById(quotationId)
                 .orElseThrow(() -> new AppException(ErrorCode.QUOTATION_NOT_FOUND));
 
         quotation.setStatus(QuotationStatus.ACCEPTED);
@@ -106,7 +108,8 @@ public class SalesServiceImpl implements SalesService {
         }
 
         // 2. Kiểm tra Báo giá có hợp lệ không
-        Quotation quotation = quotationRepository.findById(quotationId)
+        Quotation quotation = quotationRepository
+                .findById(quotationId)
                 .orElseThrow(() -> new AppException(ErrorCode.QUOTATION_NOT_FOUND));
 
         if (quotation.getStatus() != QuotationStatus.ACCEPTED) {

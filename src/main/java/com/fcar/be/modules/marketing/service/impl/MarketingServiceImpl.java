@@ -6,25 +6,25 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import com.fcar.be.modules.marketing.entity.Event;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fcar.be.core.exception.AppException;
 import com.fcar.be.core.exception.ErrorCode;
+import com.fcar.be.modules.crm.dto.request.LeadCreateReq;
+import com.fcar.be.modules.crm.service.LeadService;
+import com.fcar.be.modules.identity.repository.UserRepository;
 import com.fcar.be.modules.marketing.dto.request.CampaignCreateReq;
 import com.fcar.be.modules.marketing.dto.response.VoucherRes;
 import com.fcar.be.modules.marketing.entity.Campaign;
+import com.fcar.be.modules.marketing.entity.Event;
 import com.fcar.be.modules.marketing.entity.Voucher;
 import com.fcar.be.modules.marketing.enums.VoucherStatus;
 import com.fcar.be.modules.marketing.mapper.MarketingMapper;
 import com.fcar.be.modules.marketing.repository.CampaignRepository;
+import com.fcar.be.modules.marketing.repository.EventRepository;
 import com.fcar.be.modules.marketing.repository.VoucherRepository;
 import com.fcar.be.modules.marketing.service.MarketingService;
-import com.fcar.be.modules.marketing.repository.EventRepository;
-import com.fcar.be.modules.crm.service.LeadService;
-import com.fcar.be.modules.identity.repository.UserRepository;
-import com.fcar.be.modules.crm.dto.request.LeadCreateReq;
 
 import lombok.RequiredArgsConstructor;
 
@@ -111,25 +111,27 @@ public class MarketingServiceImpl implements MarketingService {
     @Transactional
     public VoucherRes registerEventAndClaimVoucher(Long eventId, Long userId) {
         // 1. Kiểm tra Event
-        Event event = eventRepository.findById(eventId)
+        Event event = eventRepository
+                .findById(eventId)
                 .orElseThrow(() -> new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION)); // Cần tạo thêm EVENT_NOT_FOUND
 
         // 2. Lấy thông tin User hiện tại (Identity Module)
-        var user = userRepository.findById(userId)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        var user = userRepository.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         // 3. Tự động tạo Lead bên CRM Module
-        com.fcar.be.modules.crm.dto.request.LeadCreateReq leadReq = com.fcar.be.modules.crm.dto.request.LeadCreateReq.builder()
-                .userId(userId)
-                .fullName(user.getFullName())
-                .phone(user.getPhone() != null ? user.getPhone() : "0000000000") // Tránh lỗi null phone
-                .source(com.fcar.be.modules.crm.enums.LeadSource.EVENT)
-                .build();
+        com.fcar.be.modules.crm.dto.request.LeadCreateReq leadReq =
+                com.fcar.be.modules.crm.dto.request.LeadCreateReq.builder()
+                        .userId(userId)
+                        .fullName(user.getFullName())
+                        .phone(user.getPhone() != null ? user.getPhone() : "0000000000") // Tránh lỗi null phone
+                        .source(com.fcar.be.modules.crm.enums.LeadSource.EVENT)
+                        .build();
         leadService.createLead(leadReq);
 
         // 4. Tìm và cấp Voucher (Marketing Module)
         if (event.getCampaign() != null) {
-            Voucher voucher = voucherRepository.findFirstByCampaignIdAndStatus(event.getCampaign().getId(), VoucherStatus.ACTIVE)
+            Voucher voucher = voucherRepository
+                    .findFirstByCampaignIdAndStatus(event.getCampaign().getId(), VoucherStatus.ACTIVE)
                     .orElseThrow(() -> new AppException(ErrorCode.VOUCHER_NOT_FOUND)); // Hết voucher
 
             voucher.setUserId(userId);
@@ -143,7 +145,8 @@ public class MarketingServiceImpl implements MarketingService {
     @Transactional
     public VoucherRes validateAndUseVoucher(String code, Long userId, Long masterDataId) {
         // 1. Kiểm tra quyền sở hữu
-        Voucher voucher = voucherRepository.findByCodeAndUserId(code, userId)
+        Voucher voucher = voucherRepository
+                .findByCodeAndUserId(code, userId)
                 .orElseThrow(() -> new AppException(ErrorCode.VOUCHER_NOT_OWNED));
 
         Campaign campaign = voucher.getCampaign();
@@ -168,5 +171,4 @@ public class MarketingServiceImpl implements MarketingService {
         voucher.setStatus(VoucherStatus.USED);
         return marketingMapper.toVoucherRes(voucherRepository.save(voucher));
     }
-
 }

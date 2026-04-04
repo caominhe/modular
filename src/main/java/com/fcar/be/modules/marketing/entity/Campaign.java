@@ -2,6 +2,7 @@ package com.fcar.be.modules.marketing.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -12,7 +13,6 @@ import com.fcar.be.modules.marketing.enums.DiscountType;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import java.util.Set;
 
 @Getter
 @Setter

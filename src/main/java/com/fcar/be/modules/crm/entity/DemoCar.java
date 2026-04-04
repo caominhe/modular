@@ -1,6 +1,7 @@
 package com.fcar.be.modules.crm.entity;
 
 import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

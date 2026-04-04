@@ -43,8 +43,7 @@ public class CarController {
     }
 
     @PutMapping("/{vin}/transfer")
-    public ApiResponse<CarDetailRes> transferCar(
-            @PathVariable String vin, @RequestBody @Valid CarTransferReq request) {
+    public ApiResponse<CarDetailRes> transferCar(@PathVariable String vin, @RequestBody @Valid CarTransferReq request) {
         return ApiResponse.<CarDetailRes>builder()
                 .result(carService.transferCar(vin, request))
                 .build();

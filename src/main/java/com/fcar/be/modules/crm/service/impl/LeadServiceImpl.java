@@ -39,7 +39,8 @@ public class LeadServiceImpl implements LeadService {
     @Override
     @Transactional
     public LeadRes assignSales(Long leadId, Long salesId) {
-        Lead lead = leadRepository.findById(leadId)
+        Lead lead = leadRepository
+                .findById(leadId)
                 .orElseThrow(() -> new AppException(ErrorCode.LEAD_NOT_FOUND)); // Cần tạo mã lỗi LEAD_NOT_FOUND sau
 
         lead.setAssignedSalesId(salesId);
@@ -58,8 +59,7 @@ public class LeadServiceImpl implements LeadService {
     @Override
     @Transactional
     public void logActivity(Long leadId, Long customerUserId, LeadActivityReq req) {
-        Lead lead = leadRepository.findById(leadId)
-                .orElseThrow(() -> new AppException(ErrorCode.LEAD_NOT_FOUND));
+        Lead lead = leadRepository.findById(leadId).orElseThrow(() -> new AppException(ErrorCode.LEAD_NOT_FOUND));
 
         // 1. Tạo lịch sử tương tác
         LeadActivity activity = LeadActivity.builder()
@@ -79,8 +79,7 @@ public class LeadServiceImpl implements LeadService {
     @Override
     @Transactional
     public void updateLeadStatus(Long leadId, LeadStatus newStatus) {
-        Lead lead = leadRepository.findById(leadId)
-                .orElseThrow(() -> new AppException(ErrorCode.LEAD_NOT_FOUND));
+        Lead lead = leadRepository.findById(leadId).orElseThrow(() -> new AppException(ErrorCode.LEAD_NOT_FOUND));
         lead.setStatus(newStatus);
         leadRepository.save(lead);
     }

@@ -2,9 +2,12 @@ package com.fcar.be.modules.marketing.dto.request;
 
 import java.math.BigDecimal;
 import java.util.Set;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 import com.fcar.be.modules.marketing.enums.DiscountType;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

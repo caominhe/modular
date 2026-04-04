@@ -1,6 +1,7 @@
 package com.fcar.be.modules.crm.dto.request;
 
 import com.fcar.be.modules.crm.enums.LeadStatus;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

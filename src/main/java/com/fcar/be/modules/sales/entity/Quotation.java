@@ -50,5 +50,4 @@ public class Quotation {
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     LocalDateTime createdAt;
-
 }
